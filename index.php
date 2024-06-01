@@ -5,7 +5,10 @@ include("includes/config.php");
 include("includes/functions.php");
 include("includes/header.php");
 
-// var_dump($_POST);
+if(isset($_SESSION['id'])) {
+	header("Location: dashboard.php");
+	die();
+}
 
 if (isset($_POST['email'])) {
 	if ($stm = $connect->prepare('SELECT * FROM users WHERE email = ? AND password = ? AND active = 1')){
@@ -22,6 +25,8 @@ if (isset($_POST['email'])) {
 			$_SESSION['id'] = $user['id'];
 			$_SESSION['email'] = $user['email'];
 			$_SESSION['username'] = $user['username'];
+
+			set_message("You have successfully logged in " . $_SESSION['username']);
 			
 
 			header('Location: dashboard.php');
