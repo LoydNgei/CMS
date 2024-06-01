@@ -13,10 +13,9 @@
             <a href="#">Logo</a>
         </div>
         <div class="md:flex hidden items-center space-x-4">
-            <a href="#" class="text-gray-800 hover:text-blue-500">Home</a>
-            <a href="#" class="text-gray-800 hover:text-blue-500">About</a>
-            <a href="#" class="text-gray-800 hover:text-blue-500">Services</a>
-            <a href="#" class="text-gray-800 hover:text-blue-500">Contact</a>
+            <a href="/" class="text-gray-800 hover:text-blue-500">Home</a>
+            <a href="dashboard.php" class="text-gray-800 hover:text-blue-500">Dashboard</a>
+            <a href="logout.php" class="text-gray-800 hover:text-blue-500">Logout</a>
         </div>
         <div class="md:hidden">
             <button id="menu-toggle" class="focus:outline-none">
@@ -28,16 +27,24 @@
     </div>
 </header>
 
-<div>
-    <!-- Main content will go here -->
-</div>
+
+<?php get_message(); ?>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div>
+    Main content will go here
+</div> -->
 
 <!-- The closing tags are inside the footer.php -->
 
-<script>
-    document.getElementById('menu-toggle').addEventListener('click', function() {
-        document.querySelector('.md\\:flex').classList.toggle('hidden');
-    });
-</script>
-</body>
-</html>
+<!-- </body>
+</html> -->
