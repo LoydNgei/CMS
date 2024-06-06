@@ -7,14 +7,13 @@ include("includes/header.php");
 secure();
 
 
-if (isset($_POST['username'])) {
-    if($stm = $connect->prepare('INSERT INTO users (username, email, password, active) VALUES (?, ?, ?, ?)')) {
-        $hashed = sha1($_POST['password']);
-        $stm->bind_param('ssss', $_POST['username'], $_POST['email'], $hashed, $_POST['active']);
+if (isset($_POST['title'])) {
+    if($stm = $connect->prepare('INSERT INTO posts (title, content, author, date) VALUES (?, ?, ?, ?)')) {
+        $stm->bind_param('ssss', $_POST['title'], $_POST['content'], $_POST['author'], $_POST['date']);
         $stm->execute();
 
-        set_message("A new user " . $_SESSION['username'] . " has been added");
-        header('Location: users.php');
+        set_message("A new post " . $_SESSION['title'] . " has been added");
+        header('Location: posts.php');
         $stm->close();
         die();
 
@@ -29,38 +28,36 @@ if (isset($_POST['username'])) {
 <div class="container mx-auto p-6">
     <div class="flex justify-center">
         <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Add User</h1>
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Add Post</h1>
             <form method="POST">
-                <!-- Username input -->
+
+                <!-- Title input -->
                 <div class="mb-6">
-                    <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="title" class="block text-gray-700 font-semibold mb-2">Title</label>
+                    <input type="text" id="title" name="title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
-                <!-- Email input -->
+                <!-- Author input -->
                 <div class="mb-6">
-                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="author" class="block text-gray-700 font-semibold mb-2">Author</label>
+                    <input type="text" id="author" name="author" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
-                <!-- Password input -->
+                <!-- Content input -->
                 <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="content" class="block text-gray-700 font-semibold mb-2">Content</label>
+                    <textarea name="content" id="content" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <!-- Active select -->
                 <div class="mb-6">
-                    <label for="active" class="block text-gray-700 font-semibold mb-2">Status</label>
-                    <select name="active" id="active" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
+                    <label for="date" class="block text-gray-700 font-semibold mb-2">Date</label>
+                    <input type="date" id="date" name="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
                 <!-- Submit button -->
                 <div class="text-center">
-                    <button type="submit" class="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Add User</button>
+                    <button type="submit" class="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Add Post</button>
                 </div>
             </form>
         </div>
