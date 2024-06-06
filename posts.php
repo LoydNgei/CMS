@@ -76,7 +76,7 @@ if ($stm = $connect->prepare('SELECT * FROM posts')){
                 </tbody>
             </table>
             <div class="flex justify-end mt-4">
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="users_add.php">Add new user</a>
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="posts_add.php">Add new Post</a>
             </div>
         </div>
     </div> 
