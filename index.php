@@ -3,12 +3,14 @@
 include("includes/database.php");
 include("includes/config.php");
 include("includes/functions.php");
-include("includes/header.php");
+
 
 if(isset($_SESSION['id'])) {
 	header("Location: dashboard.php");
 	die();
 }
+
+include("includes/header.php");
 
 if (isset($_POST['email'])) {
 	if ($stm = $connect->prepare('SELECT * FROM users WHERE email = ? AND password = ? AND active = 1')){
