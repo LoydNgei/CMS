@@ -6,112 +6,80 @@ include("includes/functions.php");
 include("includes/header.php");
 secure();
 
-
-if (isset($_POST['username'])) {
-    if($stm = $connect->prepare('UPDATE users SET username = ?, email = ?, active = ? WHERE id = ?')) {
-        $hashed = sha1($_POST['password']);
-        $stm->bind_param('sssi', $_POST['username'], $_POST['email'], $_POST['active'], $_GET['id']);
+if (isset($_POST['title'])) {
+    if($stm = $connect->prepare('UPDATE posts SET title = ?, content = ?, date = ? WHERE id = ?')) {
+        $stm->bind_param('sssi', $_POST['title'], $_POST['content'], $_POST['date'], $_GET['id']);
         $stm->execute();
 
         $stm->close();
-
-        if(isset($_POST['password'])){
-            if ($stm = $connect->prepare('UPDATE users SET password = ? WHERE id = ?')){
-                $hashed = sha1($_POST['password']);
-                $stm->bind_param('si', $hashed, $_GET['id']);
-                $stm->execute();
-            }
-            else{
-                echo "Could not prepare password update statement";
-            }
     
-            set_message("A user " . $_GET['id'] . " has been updated");
-            header('Location: users.php');
-            die();
-        }
-
-        } else {
-            echo "Could not prepare user update statement!";
+        set_message("A post " . $_GET['id'] . " has been updated");
+        header('Location: posts.php');
+        die();
+    } else {
+        echo "Could not prepare post update statement!";
     }
 }
 
-
-
-
 if (isset($_GET['id'])){
-    if($stm = $connect->prepare('SELECT * FROM users WHERE id = ?')) {
+    if($stm = $connect->prepare('SELECT * FROM posts WHERE id = ?')) {
         $stm->bind_param('i', $_GET['id']);
         $stm->execute();
 
-    $result = $stm->get_result();
-    $user = $result->fetch_assoc();
+        $result = $stm->get_result();
+        $post = $result->fetch_assoc();
 
-    if ($user) {
-
-    
+        if ($post) {
 ?>
+
 <div class="container mx-auto p-6">
     <div class="flex justify-center">
         <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Edit User</h1>
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Edit Post</h1>
             <form method="POST">
-                <!-- Username input -->
+                <!-- Title input -->
                 <div class="mb-6">
-                    <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="username" name="username" value="<?php echo $user['username']?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="title" class="block text-gray-700 font-semibold mb-2">Title</label>
+                    <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
-                <!-- Email input -->
+                <!-- Author input -->
                 <div class="mb-6">
-                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input type="email" id="email" name="email" value="<?php echo $user['email']?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="author" class="block text-gray-700 font-semibold mb-2">Author</label>
+                    <input type="text" id="author" name="author" value="<?php echo htmlspecialchars($post['author']); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
-                <!-- Password input -->
+                <!-- Content input -->
                 <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="content" class="block text-gray-700 font-semibold mb-2">Content</label>
+                    <textarea name="content" id="content" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"><?php echo htmlspecialchars($post['content']); ?></textarea>
                 </div>
 
-                <!-- Active select -->
+                <!-- Date select -->
                 <div class="mb-6">
-                    <label for="active" class="block text-gray-700 font-semibold mb-2">Status</label>
-                    <select name="active" id="active" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option <?php echo ($user['active']) ? "selected" : ""; ?> value="1">Active</option>
-                        <option <?php echo ($user['inactive']) ? "" : "selected";?> value="0">Inactive</option>
-                    </select>
+                    <label for="date" class="block text-gray-700 font-semibold mb-2">Date</label>
+                    <input type="date" id="date" name="date" value="<?php echo htmlspecialchars($post['date']); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
                 <!-- Submit button -->
                 <div class="text-center">
-                    <button type="submit" class="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Update User</button>
+                    <button type="submit" class="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Edit Post</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-
-<!-- The footer section -->
-
 <?php
-
+        }
+        $stm->close();
+    } else {
+        echo "Could not prepare statement!";
     }
-    $stm->close();
-
 } else {
-    echo "Could not prepare statement!";
-}
-
-} else {
-    echo "No user selected";
+    echo "No post selected";
     die();
 }
 
-include("includes/footer.php")
+include("includes/footer.php");
 ?>
-
-
-
-
