@@ -17,7 +17,6 @@ if (isset($_POST['email'])) {
 		$hashed = sha1($_POST['password']);
 		$stm->bind_param('ss', $_POST['email'], $hashed);
 		$stm->execute();
-
 		$result = $stm->get_result();
 		$user = $result->fetch_assoc();
 
@@ -42,7 +41,6 @@ if (isset($_POST['email'])) {
 	}
 }
 ?>
-
 
 <body class="bg-gray-100">
     <div class="flex items-center justify-center min-h-screen">
