@@ -32,17 +32,8 @@ if ($stm = $connect->prepare('SELECT * FROM users')){
 
 
     if ($result->num_rows > 0) {
-    
-
-
-
-
-
 
 ?>
-
-
-
 
 <div class="container mx-auto p-6">
     <div class="flex justify-center">
